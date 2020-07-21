@@ -1,5 +1,3 @@
-集成了[linkedme](https://www.linkedme.cc/)提供的LinkAccount功能，可实现一键登录（支持移动、联通、电信）等功能。
-
 # 功能说明
 此插件集成了[linkedme](https://www.linkedme.cc/)提供的LinkAccount功能，可实现一键登录（支持移动、联通、电信）等功能。
 # 使用说明
