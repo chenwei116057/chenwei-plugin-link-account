@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="chenwei-plugin-link-account"
+        version="1.0.7">
+    <name>LinkAccountPlugin</name>
+    <description>LinkAccount插件</description>
+    <author email="1458010118@qq.com" href="http://www.chenwei.site">陈炜</author>
+    <license>Apache 2.0</license>
+    <keywords>cordova,linkAccount</keywords>
+    <js-module src="www/LinkAccountPlugin.js" name="LinkAccountPlugin">
+        <clobbers target="LinkAccountPlugin"/>
+    </js-module>
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="LinkAccountPlugin">
+                <param name="android-package" value="com.chenwei.plugin.LinkAccountPlugin"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <!--允许应用程序联网，用于访问网关和认证服务器-->
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <!--获取imsi用于判断双卡和换卡-->
+            <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+            <!--允许程序访问WiFi网络状态信息-->
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+            <!--获取网络状态，判断是否数据、wifi等-->
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <!--允许程序改变网络连接状态-->
+            <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+            <!--地理位置信息-->
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity
+                    android:name="cc.lkme.linkaccount.LoginAuthActivity"
+                    android:configChanges="orientation|keyboardHidden|screenSize"
+                    android:launchMode="singleTop"
+                    android:screenOrientation="portrait"
+                    android:theme="@android:style/Theme.DeviceDefault.NoActionBar"/>
+            <activity
+                    android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"
+                    android:configChanges="orientation|keyboardHidden|screenSize"
+                    android:launchMode="singleTop"
+                    android:screenOrientation="portrait"
+                    android:theme="@android:style/Theme.DeviceDefault.NoActionBar"/>
+        </config-file>
+        <source-file src="src/main/android/LinkAccountPlugin.java" target-dir="src/com/chenwei/plugin"/>
+        <source-file src="src/main/android/LinkAccountPluginResult.java" target-dir="src/com/chenwei/plugin"/>
+        <source-file src="src/resources/android/linkAccount.aar" target-dir="libs"/>
+        <framework src="src/resources/android/linkAccount.gradle" custom="true" type="gradleReference"/>
+    </platform>
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="LinkAccountPlugin">
+                <param name="ios-package" value="LinkAccountPlugin"/>
+            </feature>
+        </config-file>
+        <framework src="libc++.1.tbd"/>
+        <source-file src="src/main/ios/LinkAccountPlugin.m"/>
+        <header-file src="src/main/ios/LinkAccountPlugin.h"/>
+        <framework src="src/resources/ios/LinkAccount_Lib.framework" custom="true"/>
+        <resource-file src="src/resources/ios/LinkAccount.bundle"/>
+    </platform>
+</plugin>

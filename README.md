@@ -1,91 +1,120 @@
-# chenwei-plugin-link-account
- LinkAccunt插件，提供基于三大运营商的一键登录服务
-# 功能说明
-此插件集成了[linkedme](https://www.linkedme.cc/)提供的LinkAccount功能，可实现一键登录（支持移动、联通、电信）等功能。
-# 使用说明
-使用此插件前请先前往[linkedme](https://dashboard.linkedme.cc)完成linkAccount功能的注册及配置。
-## 插件安装
-### cordova插件安装
-```
-ionic cordova plugin add chenwei-plugin-link-account 
-```
-### 指引文件安装
-```
-npm i @chenwei116057/link-account
-```
-### 导入插件
-在项目app.module.ts中引入LinkAccountPlugin
-```
-import {LinkAccountPlugin} from '@chenwei116057/link-account';
-...
-providers: [
-        ...
+使用高德定位SDK进行定位，以解决webapp中定位不准的问题
+
+## 安装
+    ionic cordova plugin add chenwei-plugin-amap --variable ANDROID_KEY=your android key --variable IOS_KEY=your ios key
+
+    npm i @chenwei116057/amap
+## 使用
+    在app.module.ts引入LinkAccountPlugin
+    
+    
+    import {LinkAccountPlugin} from '@chenwei116057/amap';
+    ...
+    providers: [
         LinkAccountPlugin
-        ...
-    ],
-```
-### 初始化插件
-**插件所有方法都必须在初始化插件成功后才能正常执行**，所以推荐在APP启动后就初始化插件一次，可多次调用初始化方法，不会多次初始化，仅当未成功初始化时调用才会执行初始化。
-### 方法概览
-此插件共包含三个方法
-```
+    ]
+## 方法介绍
+### 获取当前位置信息(IOS/安卓)
+    getLocation(): Promise<LocationResult|void>;
+    
+    LocationResult {
     /**
-     * 初始化SDK，需在APP启动后调用一次
+     * 定位精度 仅android存在，IOS恒为undefined
      */
-    init(appKey: string): Promise<LinkAccountPluginResult>;
+    accuracy: number;
+    /**
+     * 区域编码
+     */
+    adCode: string;
+    /**
+     * 地址
+     */
+    address: string;
+    /**
+     * 城市|区
+     */
+    city: string;
+    /**
+     * 城市编码
+     */
+    cityCode: string;
+    /**
+     *精度
+     */
+    latitude: number;
+    /**
+     *纬度
+     */
+    longitude: number;
+    /**
+     * 当前定位点的AOI信息
+     */
+    aoiName: string;
+    /**
+     * 国家
+     */
+    country: string;
+    /**
+     * 城区信息
+     */
+    district: string;
+    /**
+     * 当前定位点的POI信息
+     */
+    poiName: string;
+    /**
+     * 省份
+     */
+    province: string;
+    /**
+     * 街道
+     */
+    street: string;
+    /**
+     * 街道号
+     */
+    streetNum: string;
+    /**
+     * 定位时间 仅android存在，IOS恒为undefined
+     */
+    locationTime: Date
+    }
+`
+### 获取天气信息(IOS/安卓)
+    getWeatherInfo(params: { adCode: string }): Promise<WeatherInfo | void>;
+    WeatherInfo {
+    type: "live" | "forecast";
+    /**
+     * 天气
+     */
+    weather: string;
+    /**
+     * 温度
+     */
+    temperature: string;
+    /**
+     * 城市|区
+     */
+    city: string;
+    /**
+     * 省份
+     *
+     */
+    province: string;
+    /**
+     * 风向
+     */
+    windDirection: string;
+    /**
+     * 风力
+     */
+    windPower: string;
+    /**
+     * 湿度
+     */
+    humidity: string;
+    }
+### 计算两个坐标间的距离(IOS/安卓)
+    calculateDistance(params: { startLatitude: number, startLongitude: number, endLatitude: number, endLongitude: number }): Promise<number | void>;
 
-    /**
-     * 预取号，必须在调用Login前请求一次
-     */
-    getMobileAuth(): Promise<LinkAccountPluginResult>;
-
-    /**
-     * 一键登录
-     */
-    login(privacy: { name: string, url: string }): Promise<LinkAccountPluginResult>;
-```
-### 返回内容说明
-此插件所有方法均返回Promise对象，此Promise对象中包含LinkAccountPluginResult值，初始化方法和预取号方法返回的LinkAccountPluginResult对象中仅包含status值，代表此次操作是否成功，LinkAccountPluginResult详细内容如下：
-```
- /**
-     * 结果状态，0：失败，1：成功   当为调用一键登录时可能返回状态2，代表用户选择了以其它方式登录
-     */
-    status: string;
-    /**
-     *  一键登录或号码认证 token，移动、联通、电信均返回
-     */
-    accessToken: string;
-    /**
-     * 一键登录或号码认证 auth，电信返回
-     */
-    gwAuth: string;
-    /**
-     * CM: 中国移动 CU: 中国联通 CT: 中国电信 XX: 未知
-     */
-    operatorType: string;
-    /**
-     * 系统标识，0：iOS 1: Android
-     */
-    platform: string;
-```
-#### 注入LinkAccountPlugin
-```
-...
-    constructor(
-        private linkAccountPlugin: LinkAccountPlugin
-    )
-...
-```
-#### 初始化
-```
-this.linkAccountPlugin.init('your app key')
-```
-#### 预取号
-在调用一键登录之前需先调用一次此方法，调用一次即可。
-```
-this.linkAccountPlugin.getMobileAuth()
-```
-#### 一键登录
-```
-this.linkAccountPlugin.login({name: '你的隐私协议名称', url: '你的隐私协议内容访问地址'})
-```
+    

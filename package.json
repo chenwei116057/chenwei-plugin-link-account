@@ -1,0 +1,26 @@
+{
+  "name": "chenwei-plugin-link-account",
+  "version": "1.0.7",
+  "description": "LinkAccount插件",
+  "homepage": "https://github.com/chenwei116057/chenwei-plugin-link-account",
+  "licenses": [
+    {
+      "license": "MIT"
+    }
+  ],
+  "cordova": {
+    "id": "chenwei-plugin-link-account",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "linkAccount",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "陈炜",
+  "license": ""
+}
