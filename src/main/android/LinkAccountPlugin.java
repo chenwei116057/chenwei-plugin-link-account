@@ -81,7 +81,7 @@ public class LinkAccountPlugin extends CordovaPlugin {
         ApplicationInfo appInfo = null;
         String appKey = "";
         try {
-            appKey = "de76003d00f848301e78fe1d1c94534f";
+            appKey = args.getString(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,15 +124,15 @@ public class LinkAccountPlugin extends CordovaPlugin {
                 callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, LinkAccountPluginResult.builder(LinkAccountPluginResult.ERROR).build()));
             }
         });
-        /*try {
-            Thread.sleep(2000);*/
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, LinkAccountPluginResult.builder(LinkAccountPluginResult.SUCCESS).build());
-        callbackContext.sendPluginResult(pluginResult);
-        /*} catch (InterruptedException e) {
+        try {
+            Thread.sleep(400);
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, LinkAccountPluginResult.builder(LinkAccountPluginResult.SUCCESS).build());
+            callbackContext.sendPluginResult(pluginResult);
+        } catch (InterruptedException e) {
             e.printStackTrace();
             PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, LinkAccountPluginResult.builder(LinkAccountPluginResult.ERROR).build());
             callbackContext.sendPluginResult(pluginResult);
-        }*/
+        }
     }
     
     private void getMobileAuth(CallbackContext callbackContext, JSONArray args) {
@@ -163,6 +163,10 @@ public class LinkAccountPlugin extends CordovaPlugin {
         int y = (int) height2;
         Log.d(TAG, "高度" + y);
         AuthUIConfig.Builder builder = new AuthUIConfig.Builder();
+        builder.setSwitchClicker(v -> {
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, LinkAccountPluginResult.builder(LinkAccountPluginResult.OTHER_LOGIN).build());
+            callbackContext.sendPluginResult(pluginResult);
+        });
         builder.setStatusBarLight(true)
                 .setNavText("登录")
                 .setNavBackOffset(14, 14, null, null)
