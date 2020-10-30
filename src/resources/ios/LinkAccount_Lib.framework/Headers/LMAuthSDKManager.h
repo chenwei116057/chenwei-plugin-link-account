@@ -72,6 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)getLoginTokenWithController:(UIViewController *_Nonnull)vc model:(LMCustomModel *_Nullable)model timeout:(NSTimeInterval )timeout complete:(void (^_Nullable)(NSDictionary * _Nonnull resultDic))complete otherLogin:(void(^)(void))otherBlock;
 
+- (void)getLoginTokenWithController:(UIViewController *_Nonnull)vc model:(LMCustomModel *_Nullable)model timeout:(NSTimeInterval )timeout complete:(void (^_Nullable)(NSDictionary * _Nonnull resultDic))complete clickLoginBtn:(void(^)(void))clickLogin otherLogin:(void(^)(void))otherBlock;
+
 
 - (void)getAccessTokensWithController:(UIViewController *_Nonnull)vc complete:(void (^_Nullable)(NSDictionary * _Nonnull resultDic))complete;
 
