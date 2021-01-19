@@ -61,8 +61,9 @@ providers: [
 ### 返回内容说明
 此插件所有方法均返回Promise对象，此Promise对象中包含LinkAccountPluginResult值，初始化方法和预取号方法返回的LinkAccountPluginResult对象中仅包含status值，代表此次操作是否成功，LinkAccountPluginResult详细内容如下：
 ```
- /**
+    /**
      * 结果状态，0：失败，1：成功   当为调用一键登录时可能返回状态2，代表用户选择了以其它方式登录
+     * 新增LinkMe返回结果，返回内容为一个对象，包含 resultCode，resultData 等。。有时ios 会返回desc字段作为信息。建议调试时输出日志查看返回信息
      */
     status: string;
     /**
