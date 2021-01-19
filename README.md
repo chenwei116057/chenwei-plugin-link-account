@@ -24,6 +24,22 @@ providers: [
 ```
 ### 初始化插件
 **插件所有方法都必须在初始化插件成功后才能正常执行**，所以推荐在APP启动后就初始化插件一次，可多次调用初始化方法，不会多次初始化，仅当未成功初始化时调用才会执行初始化。
+### `config.xml`配置修改
+```
+  <platform name="android">
+    ...
+    <!-- 在resources/android/res/drawable放入android用的logo -->
+    <resource-file src="resources/android/res/drawable/logo.png" target="app/src/main/res/drawable/logo.png" />
+    ...
+ </platform>
+
+  <platform name="ios">  
+    ...
+    <!-- 在resources/ios放入android用的logo -->
+    <resource-file src="resources/ios/logo.png" />
+    ...
+ </platform>
+```
 ### 方法概览
 此插件共包含三个方法
 ```
