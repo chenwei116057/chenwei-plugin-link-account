@@ -49,6 +49,7 @@
         <source-file src="src/main/android/LinkAccountPluginResult.java" target-dir="src/com/chenwei/plugin"/>
         <source-file src="src/resources/android/linkAccount.aar" target-dir="libs"/>
         <framework src="src/resources/android/linkAccount.gradle" custom="true" type="gradleReference"/>
+        <resource-file src="src/resources/android/res/drawable/back.png" target="res/drawable/back.png" />
     </platform>
     <platform name="ios">
         <config-file parent="/*" target="config.xml">

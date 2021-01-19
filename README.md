@@ -24,6 +24,22 @@ providers: [
 ```
 ### 初始化插件
 **插件所有方法都必须在初始化插件成功后才能正常执行**，所以推荐在APP启动后就初始化插件一次，可多次调用初始化方法，不会多次初始化，仅当未成功初始化时调用才会执行初始化。
+### `config.xml`配置修改
+```
+  <platform name="android">
+    ...
+    <!-- 在resources/android/res/drawable放入android用的logo -->
+    <resource-file src="resources/android/res/drawable/logo.png" target="app/src/main/res/drawable/logo.png" />
+    ...
+ </platform>
+
+  <platform name="ios">  
+    ...
+    <!-- 在resources/ios放入android用的logo -->
+    <resource-file src="resources/ios/logo.png" />
+    ...
+ </platform>
+```
 ### 方法概览
 此插件共包含三个方法
 ```
@@ -45,8 +61,9 @@ providers: [
 ### 返回内容说明
 此插件所有方法均返回Promise对象，此Promise对象中包含LinkAccountPluginResult值，初始化方法和预取号方法返回的LinkAccountPluginResult对象中仅包含status值，代表此次操作是否成功，LinkAccountPluginResult详细内容如下：
 ```
- /**
+    /**
      * 结果状态，0：失败，1：成功   当为调用一键登录时可能返回状态2，代表用户选择了以其它方式登录
+     * 新增LinkMe返回结果，返回内容为一个对象，包含 resultCode，resultData 等。。有时ios 会返回desc字段作为信息。建议调试时输出日志查看返回信息
      */
     status: string;
     /**

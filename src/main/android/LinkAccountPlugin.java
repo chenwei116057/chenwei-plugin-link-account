@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.res.Resources;
 
 import cc.lkme.linkaccount.AuthUIConfig;
 import cc.lkme.linkaccount.LinkAccount;
@@ -34,14 +36,14 @@ public class LinkAccountPlugin extends CordovaPlugin {
     private Activity activity;
     private Context context;
     private CallbackContext callbackContext;
-    
+
     @Override
     public void initialize(CordovaInterface cordovaInterface, CordovaWebView webView) {
         super.initialize(cordovaInterface, webView);
         activity = cordovaInterface.getActivity();
         context = cordovaInterface.getContext();
     }
-    
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         LOG.i(TAG, "LinkAccountPlugin接收到新的方法调用，方法为： 【 " + action + " 】");
@@ -69,13 +71,13 @@ public class LinkAccountPlugin extends CordovaPlugin {
         }
         return true;
     }
-    
+
     private interface MethodNames {
         String INIT = "init";
         String GET_MOBILE_AUTH = "getMobileAuth";
         String LOGIN = "login";
     }
-    
+
     private void init(CallbackContext context, JSONArray args) {
         Log.d(TAG, "开始初始化LinkAccountPlugin");
         ApplicationInfo appInfo = null;
@@ -116,12 +118,13 @@ public class LinkAccountPlugin extends CordovaPlugin {
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, builder.build());
                 callbackContext.sendPluginResult(pluginResult);
             }
-            
+
             @Override
             public void onFailed(int i, String s) {
                 Log.d(TAG, "操作失败");
                 Log.e(TAG, s);
-                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, LinkAccountPluginResult.builder(LinkAccountPluginResult.ERROR).build()));
+
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, LinkAccountPluginResult.builder(s).build()));
             }
         });
         try {
@@ -134,12 +137,12 @@ public class LinkAccountPlugin extends CordovaPlugin {
             callbackContext.sendPluginResult(pluginResult);
         }
     }
-    
+
     private void getMobileAuth(CallbackContext callbackContext, JSONArray args) {
         Log.d(TAG, "开始调用预取号");
         LinkAccount.getInstance().preLogin(5000);
     }
-    
+
     private void login(CallbackContext callbackContext, JSONArray args) {
         Log.d(TAG, "开始调用一键登录");
         String name = "";
@@ -153,7 +156,7 @@ public class LinkAccountPlugin extends CordovaPlugin {
         LinkAccount.getInstance().setAuthUIConfig(getPortraitActivity(name, url));
         LinkAccount.getInstance().getLoginToken(5000);
     }
-    
+
     public AuthUIConfig getPortraitActivity(String name, String url) {
         DisplayMetrics size = new DisplayMetrics();
         cordova.getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(size);
@@ -167,10 +170,17 @@ public class LinkAccountPlugin extends CordovaPlugin {
             PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, LinkAccountPluginResult.builder(LinkAccountPluginResult.OTHER_LOGIN).build());
             callbackContext.sendPluginResult(pluginResult);
         });
+        Resources activityRes = cordova.getActivity().getResources();
+        int backId = activityRes.getIdentifier("back", "drawable", cordova.getActivity().getPackageName());
+        Drawable backIcon = activityRes.getDrawable(backId);
+        int logoId = activityRes.getIdentifier("logo", "drawable", cordova.getActivity().getPackageName());
+        Drawable logoIcon = activityRes.getDrawable(logoId);
         builder.setStatusBarLight(true)
                 .setNavText("登录")
+                .setNavBackImgDrawable(backIcon)
                 .setNavBackOffset(14, 14, null, null)
                 .setNavHidden(true)
+                .setLogoImgDrawable(logoIcon)
                 .setLogoOffset(null, 100, null, null)
                 .setNumberOffset(null, y / 2 - 130, null, null)
                 .setSloganOffset(null, y / 2 - 100, null, null)
@@ -182,5 +192,5 @@ public class LinkAccountPlugin extends CordovaPlugin {
                 .setPrivacyOffset(16, 16, 16, 6);
         return builder.create();
     }
-    
+
 }
